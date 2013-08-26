@@ -1,0 +1,10 @@
+{
+    "name": "socketConnectFour",
+    "description": "Massively multiplayer connect four, aka 'The Next WoW'. Demonstrates a level of extreme Node-age known only to gods.",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "express": "3.3.5",
+        "socket.io": "0.9.16"
+    }
+}
