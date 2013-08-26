@@ -10,7 +10,15 @@ function init() {
         for(var y = 0; y < CONNECT_FOUR.SIZE.h; y++) {
             CONNECT_FOUR.GRID[x][y] = new CONNECT_FOUR.Square(CONNECT_FOUR.CELL_SIZE);
         }
-}
+    }
+
+    // Set up some bangin' JQuery events
+    $('#theGrid').click(function(e) {
+        var xPos = e.offsetX,
+            yPos = e.offsetY;
+        
+        console.log("(" + xPos + ", " + yPos + ")");
+    });
 
     main();
 }
@@ -19,8 +27,10 @@ function init() {
 function draw() {
     var ctx = CONNECT_FOUR.canvas.getContext('2d');
 
-    ctx.lineWidth = 5
-    for(var x = 0; x <= CONNECT_FOUR.GRID.length; x++) {
+    ctx.lineWidth = 5;
+
+    // TODO this still draws needlessly over the left and top edges making things look ugly
+    for(var x = 0; x < CONNECT_FOUR.GRID.length; x++) {
         ctx.beginPath();
         
         // figure out xPos to draw from in pixels
@@ -31,7 +41,7 @@ function draw() {
         ctx.stroke();
         ctx.closePath();
 
-        for(var y = 0; y <= CONNECT_FOUR.GRID[x].length; y++) {
+        for(var y = 0; y < CONNECT_FOUR.GRID[x].length; y++) {
             ctx.beginPath();
         
             // figure out yPos to draw from in pixels
@@ -46,6 +56,5 @@ function draw() {
 }
 
 function main() {
-
     draw();
 }
