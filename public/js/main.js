@@ -69,9 +69,12 @@ function draw() {
                     // Proceed to do exactly that
                     break;
                 case CFOUR.TYPES.red:
+                    ctx.fillStyle="red";
                     ctx.fillRect(xPos, yPos, CFOUR.CELL_SIZE.w, CFOUR.CELL_SIZE.h);
                     break;
                 case CFOUR.TYPES.blue:
+                    ctx.fillStyle="blue";
+                    ctx.fillRect(xPos, yPos, CFOUR.CELL_SIZE.w, CFOUR.CELL_SIZE.h);
                     break;
                 default:
                     // I don't know what the poop just happened
