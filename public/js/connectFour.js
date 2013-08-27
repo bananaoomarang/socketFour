@@ -32,11 +32,15 @@ var CFOUR = {
         };
     },
 
-    registerHit: function(pos) {
-        this.grid[pos.x][pos.y] = this.TYPES.red;
+    registerHit: function(client, pos) {
+        if(client.type === "red") {
+            this.grid[pos.x][pos.y] = this.TYPES.red;
+        } else if(client.type === "blue") {
+            this.grid[pos.x][pos.y] = this.TYPES.blue;
+        }
     },
 
-    socket: io.connect('http://192.168.0.22:8888')
+    socket: io.connect('http://192.168.1.84:8888')
 
 };
 

@@ -10,7 +10,7 @@ app.use(express.static(__dirname + "/public"));
 
 io.sockets.on('connection', function (socket) {
     connections++;
-    io.sockets.emit('client connected', connections);
+    socket.emit('client connected', connections);
     
     socket.on('disconnect', function (socket) {
         connections--;
