@@ -66,7 +66,6 @@ function draw() {
     // Iterate over grid again and put right colours in right place, redrawing accordingly
     for(var x = 0; x < CFOUR.grid.length; x++) {
         for(var y = 0; y < CFOUR.grid[x].length; y++) {
-            //var gridPos = CFOUR.fall({x: x, y: y});
 
             var pos = {
                 x: x * CFOUR.CELL_SIZE.w,

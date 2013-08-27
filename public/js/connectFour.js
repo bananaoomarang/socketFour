@@ -31,8 +31,24 @@ var CFOUR = {
             y: yCoord
         };
     },
+    
+    // Returns coords where the clicked squre would fall to 
+    fall: function(pos) {
+        for(var y = 0; y <= this.grid[pos.x].length; y++) {
+            if((this.grid[pos.x][y] !== this.TYPES.nothing) || (typeof this.grid[pos.x][y] === 'undefined')) {
+                return pos = {
+                    x: pos.x,
+                    y: (y - 1)
+                };
+            }
+        }
+    },
 
     registerHit: function(client, pos) {
+        // Figure out which box to change
+        pos = this.fall(pos);
+
+        //console.log(this.fall(pos));
         if(client.type === "red") {
             this.grid[pos.x][pos.y] = this.TYPES.red;
         } else if(client.type === "blue") {
@@ -40,17 +56,6 @@ var CFOUR = {
         }
     },
 
-    // Returns coords where the clicked squre would fall to 
-    fall: function(pos) {
-        for(var y = 0; y < this.grid[pos.x].length; y++) {
-            if(this.grid[pos.x][y] !== "nothing") {
-                return pos = {
-                    x: pos.x,
-                    y: y - 1
-                };
-            }
-        }
-    },
 
     socket: io.connect('http://192.168.1.84:8888')
 
