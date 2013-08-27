@@ -1,5 +1,6 @@
 // Consider it a namespace. Dougy Crockford says this is a good idea, because global variables are evil.
 var CFOUR = {
+    socket: io.connect('http://192.168.1.84:8888'),
 
     // How many bangin' cells to slip onto the bitchin' grid
     SIZE: {
@@ -56,9 +57,31 @@ var CFOUR = {
         }
     },
 
-
-    socket: io.connect('http://192.168.1.84:8888')
-
+    isWinner: function() {
+        for(var x = 0; x < this.SIZE.w; x++) {
+            for(var y = 0; y < this.SIZE.h; y++) {
+                // horizontal
+                if(typeof this.grid[x + 3] !== 'undefined') {
+                    if(this.grid[x][y] &&
+                       this.grid[x + 1][y] === this.grid[x][y] &&
+                       this.grid[x + 2][y] === this.grid[x][y] &&
+                       this.grid[x + 3][y] === this.grid[x][y]) {
+                           return true;
+                       }
+                }
+                
+                // Vetical
+                if(typeof this.grid[x][y + 3] !== 'undefined') {
+                    if(this.grid[x][y] &&
+                       this.grid[x][y + 1] === this.grid[x][y]  &&
+                       this.grid[x][y + 2] === this.grid[x][y] &&
+                       this.grid[x][y + 3] === this.grid[x][y]) {
+                           return true;
+                       }
+                }
+            }
+        }
+    }
 };
 
 // Pump up the grid with fresh cells

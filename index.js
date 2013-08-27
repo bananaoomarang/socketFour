@@ -21,4 +21,8 @@ io.sockets.on('connection', function (socket) {
         socket.broadcast.emit('new grid hit', data);
         socket.broadcast.emit('turn ended');
     });
+
+    socket.on('client won', function() {
+        io.sockets.emit('game ended');
+    });
 });

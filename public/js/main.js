@@ -10,9 +10,18 @@ function main() {
     });
     
     CFOUR.socket.on('turn ended', function(data) {
+        // Check for a winner...
+        if(CFOUR.isWinner()) {
+            CFOUR.socket.emit('client won');
+        }
+
         if(CFOUR.client.type !== "spectator") {
             CFOUR.client.turn = true;
         }
+    });
+
+    CFOUR.socket.on('game ended', function() {
+        $('#winMessage').html("WE HAVE A WINNER OMG fjklDSFAJFKLDJ");
     });
     
     CFOUR.socket.on('client connected', function(data) {
