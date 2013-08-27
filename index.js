@@ -17,7 +17,7 @@ io.sockets.on('connection', function (socket) {
         io.sockets.emit('client disconnected', connections);
     });
 
-    socket.on('message sent', function(data) {
-        socket.broadcast.emit('message received', data);
+    socket.on('grid hit', function(data) {
+        socket.broadcast.emit('new grid hit', data);
     });
 });

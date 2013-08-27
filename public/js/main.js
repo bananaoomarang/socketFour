@@ -1,60 +1,82 @@
-$(document).ready(init);
+$(document).ready(main);
 
-function init() {
-    CONNECT_FOUR.canvas = document.getElementById('theGrid');
+function main() {
+    CFOUR.canvas = document.getElementById('theGrid');
 
-    // Pump up the grid with fresh cells
-    for(var x = 0; x < CONNECT_FOUR.SIZE.w; x++) {
-        CONNECT_FOUR.GRID[x] = [];
-
-        for(var y = 0; y < CONNECT_FOUR.SIZE.h; y++) {
-            CONNECT_FOUR.GRID[x][y] = new CONNECT_FOUR.Square(CONNECT_FOUR.CELL_SIZE);
-        }
-    }
+    // Set up some nangin' socket events for bitch ass crazy speed multiplayer
+    CFOUR.socket.on('new grid hit', function(data) {
+        CFOUR.registerHit(data);
+        draw();
+    });
 
     // Set up some bangin' JQuery events
     $('#theGrid').click(function(e) {
         var xPos = e.offsetX,
             yPos = e.offsetY;
-        
-        console.log("(" + xPos + ", " + yPos + ")");
+
+        var hitPos = CFOUR.getGridCoords(xPos, yPos);
+        CFOUR.socket.emit('grid hit', hitPos);
+        CFOUR.registerHit(hitPos);
+
+        draw();
     });
 
-    main();
+    draw();
 }
 
 
 function draw() {
-    var ctx = CONNECT_FOUR.canvas.getContext('2d');
+    // Whack out some nizzy lines to set up the dizzy grid
+    var ctx = CFOUR.canvas.getContext('2d');
 
     ctx.lineWidth = 5;
 
+    ctx.clearRect(0, 0, CFOUR.canvas.width, CFOUR.canvas.height);
+
     // TODO this still draws needlessly over the left and top edges making things look ugly
-    for(var x = 0; x < CONNECT_FOUR.GRID.length; x++) {
+    for(var x = 0; x < CFOUR.grid.length; x++) {
         ctx.beginPath();
         
         // figure out xPos to draw from in pixels
-        var xPos = x * CONNECT_FOUR.CELL_SIZE.w;
+        var xPos = x * CFOUR.CELL_SIZE.w;
         
         ctx.moveTo(xPos, 0);
-        ctx.lineTo(xPos, CONNECT_FOUR.canvas.height);
+        ctx.lineTo(xPos, CFOUR.canvas.height);
         ctx.stroke();
         ctx.closePath();
 
-        for(var y = 0; y < CONNECT_FOUR.GRID[x].length; y++) {
+        for(var y = 0; y < CFOUR.grid[x].length; y++) {
             ctx.beginPath();
         
             // figure out yPos to draw from in pixels
-            var yPos = y * CONNECT_FOUR.CELL_SIZE.h;
+            var yPos = y * CFOUR.CELL_SIZE.h;
         
             ctx.moveTo(0, yPos);
-            ctx.lineTo(CONNECT_FOUR.canvas.width, yPos);
+            ctx.lineTo(CFOUR.canvas.width, yPos);
             ctx.stroke();
             ctx.closePath();
         }
     }
-}
 
-function main() {
-    draw();
+    // Iterate over grid again and put right colours in right place, redrawing accordingly
+    for(var x = 0; x < CFOUR.grid.length; x++) {
+        for(var y = 0; y < CFOUR.grid[x].length; y++) {
+            var xPos = x * CFOUR.CELL_SIZE.w,
+                yPos = y * CFOUR.CELL_SIZE.h;
+
+            switch(CFOUR.grid[x][y]) {
+                case CFOUR.TYPES.nothing:
+                    // Proceed to do exactly that
+                    break;
+                case CFOUR.TYPES.red:
+                    ctx.fillRect(xPos, yPos, CFOUR.CELL_SIZE.w, CFOUR.CELL_SIZE.h);
+                    break;
+                case CFOUR.TYPES.blue:
+                    break;
+                default:
+                    // I don't know what the poop just happened
+                    break;
+            }
+        }
+    }
 }

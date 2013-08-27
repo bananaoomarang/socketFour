@@ -1,5 +1,6 @@
 // Consider it a namespace. Dougy Crockford says this is a good idea, because global variables are evil.
-var CONNECT_FOUR = {
+var CFOUR = {
+
     // How many bangin' cells to slip onto the bitchin' grid
     SIZE: {
         w: 10,
@@ -12,7 +13,39 @@ var CONNECT_FOUR = {
         h: 40
     },
 
-    GRID: [],
+    grid: [],
 
-    socket: io.connect('http://192.168.0.22:8888'),
+    TYPES: {
+        nothing: 0,
+        red: 1,
+        blue: 2
+    },
+
+    // Functions takes pixel coords and outputs grid coords
+    getGridCoords: function(x, y) {
+        var xCoord = Math.floor(x / CFOUR.CELL_SIZE.w),
+        yCoord = Math.floor(y / CFOUR.CELL_SIZE.h);
+
+        return {
+            x: xCoord,
+                y: yCoord
+        };
+    },
+
+    registerHit: function(pos) {
+        this.grid[pos.x][pos.y] = this.TYPES.red;
+    },
+
+    socket: io.connect('http://192.168.0.22:8888')
+
+};
+
+// Pump up the grid with fresh cells
+for(var x = 0; x < CFOUR.SIZE.w; x++) {
+    CFOUR.grid[x] = [];
+
+    for(var y = 0; y < CFOUR.SIZE.h; y++) {
+        CFOUR.grid[x][y] = CFOUR.TYPES.nothing;
+        console.log("setting nothing");
+    }
 };
