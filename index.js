@@ -19,5 +19,6 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('grid hit', function(data) {
         socket.broadcast.emit('new grid hit', data);
+        socket.broadcast.emit('turn ended');
     });
 });

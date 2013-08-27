@@ -28,7 +28,7 @@ var CFOUR = {
 
         return {
             x: xCoord,
-                y: yCoord
+            y: yCoord
         };
     },
 
@@ -37,6 +37,18 @@ var CFOUR = {
             this.grid[pos.x][pos.y] = this.TYPES.red;
         } else if(client.type === "blue") {
             this.grid[pos.x][pos.y] = this.TYPES.blue;
+        }
+    },
+
+    // Returns coords where the clicked squre would fall to 
+    fall: function(pos) {
+        for(var y = 0; y < this.grid[pos.x].length; y++) {
+            if(this.grid[pos.x][y] !== "nothing") {
+                return pos = {
+                    x: pos.x,
+                    y: y - 1
+                };
+            }
         }
     },
 
@@ -50,6 +62,5 @@ for(var x = 0; x < CFOUR.SIZE.w; x++) {
 
     for(var y = 0; y < CFOUR.SIZE.h; y++) {
         CFOUR.grid[x][y] = CFOUR.TYPES.nothing;
-        console.log("setting nothing");
     }
 };
